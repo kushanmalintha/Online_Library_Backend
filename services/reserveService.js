@@ -1,7 +1,14 @@
 const db = require("../config/dbConfig");
+const availableService = require("./availableService");
 
 const reserve = async (user_id, book_id) => {
     try {
+        // Check if the book is available
+        const availability = await availableService.available(book_id);
+        if (availability.message !== 'available') {
+            return { success: false, message: "Book is not available for reservation." };
+        }
+
         const date = new Date();
         const timezoneOffset = date.getTimezoneOffset() * 60000;
         const reservation_date = new Date(date.getTime() - timezoneOffset);

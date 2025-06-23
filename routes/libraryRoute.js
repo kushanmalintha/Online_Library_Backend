@@ -9,4 +9,10 @@ router.post('/feedback/write', authenticateToken, libraryController.feedbackWrit
 router.delete('/user/delete/:user_id', authenticateToken, libraryController.deleteUser);
 router.post('/addbooknew', authenticateToken, libraryController.addBookNew);
 router.put('/addbookexist/:book_id', authenticateToken, libraryController.addBookExist);
+router.put('/user/makeadmin/:user_id', authenticateToken, libraryController.makeAdmin);
+router.get('/reservation/:reservation_id', authenticateToken, libraryController.reservationLookup);
+router.get('/finerate', libraryController.getFineRate);
+router.put('/finerate', authenticateToken, libraryController.updateFineRate);
+router.get('/borrowedbooks/:user_id', authenticateToken, libraryController.getBorrowedBooks);
+router.post('/returnbook/:user_id', authenticateToken, libraryController.returnBook);
 module.exports = router;

@@ -4,17 +4,23 @@ const bcrypt = require("bcryptjs");
 
 const signup = async (username, password, email, phone_no, membership_date) => {
     try {
-        const userValid = { username, password, email };
+        const userValid = { username, password, email, phone_no, membership_date };
         const { error } = signupDetails.validate(userValid);
         if (error) {
             let errorMessage = "";
 
             // Check for specific validation errors
             error.details.forEach(detail => {
-                if (detail.context.key === 'password') {
+                if (detail.context.key === 'username') {
+                    errorMessage = "Username must be at least 3 characters and contain only letters and numbers.";
+                } else if (detail.context.key === 'password') {
                     errorMessage = "Your password must include: At least 8 characters, At least one uppercase letter (A-Z), least one lowercase letter (a-z), At least one number (0-9), At least one special symbol (like !, @, #, $, etc.)";
                 } else if (detail.context.key === 'email') {
                     errorMessage = "Invalid email format. Please enter a valid email address.";
+                } else if (detail.context.key === 'phone_no') {
+                    errorMessage = "Phone number must be exactly 10 digits.";
+                } else if (detail.context.key === 'membership_date') {
+                    errorMessage = "Membership date must be in MM/DD/YYYY format.";
                 } else {
                     errorMessage = error.details[0].message;
                 }
