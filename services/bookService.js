@@ -29,4 +29,10 @@ const book = async (name, type) => {
     );
 };
 
-module.exports = { book };
+const getBookById = async (book_id) => {
+    const sql = `SELECT * FROM books WHERE book_id = ?`;
+    const [result] = await db.execute(sql, [book_id]);
+    return result[0] || null;
+};
+
+module.exports = { book, getBookById };

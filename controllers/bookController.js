@@ -21,4 +21,19 @@ const book = async (req, res) => {
     }
 };
 
-module.exports = { book };
+const getBook = async (req, res) => {
+    try {
+        const { bookId } = req.params;
+        const book = await bookService.getBookById(bookId);
+        if (book) {
+            res.status(200).json(book);
+        } else {
+            res.status(404).json({ message: "Book not found" });
+        }
+    } catch (error) {
+        console.error("Error fetching book:", error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+};
+
+module.exports = { book, getBook };

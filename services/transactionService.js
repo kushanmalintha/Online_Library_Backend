@@ -67,4 +67,17 @@ const transaction = async (user_id, book_id, borrow_date, loan_days, status) => 
     return { success: true, result };
 };
 
-module.exports = { transaction };
+const getTransactionsByUserId = async (user_id) => {
+    const sql = `SELECT * FROM transactions WHERE user_id = ? ORDER BY borrow_date DESC`;
+    const [result] = await db.execute(sql, [user_id]);
+    // Filter to only one transaction per book_id (most recent)
+    const unique = {};
+    for (const row of result) {
+        if (!unique[row.book_id]) {
+            unique[row.book_id] = row;
+        }
+    }
+    return Object.values(unique);
+};
+
+module.exports = { transaction, getTransactionsByUserId };
