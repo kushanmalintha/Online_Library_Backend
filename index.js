@@ -13,11 +13,17 @@ const bodyParser = require('body-parser');
 const app = express();
 const PORT = process.env.PORT || 2000;
 
+require('dotenv').config();
+
 // Enable CORS for all routes and origins
 app.use(cors());
 
 // Body parser middleware
 app.use(bodyParser.json());
+
+app.get("/", (req, res) => {
+  res.send("API is running");
+});
 
 // Use routes
 app.use("/api/auth", signupRouter, loginRouter);
